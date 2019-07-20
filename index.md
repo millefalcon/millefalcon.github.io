@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Nothing much
-tagline: Kerberos is sleeping
+title: Stuff
+tagline: Stuffs that i went through...
 description: Minimal tutorial on making a simple website with GitHub Pages
 ---
 
