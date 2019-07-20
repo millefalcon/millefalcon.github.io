@@ -1,6 +1,7 @@
 @font-face{
-	font-family: "Roboto";
-	src: url("Roboto Mono for Powerline.ttf") format("opentype"),
+	font-family: 'Roboto';
+	src: url('Roboto Mono for Powerline.ttf') format('opentype'),
+	src: url('https://github.com/millefalcon/millefalcon.github.io/blob/master/assets/themes/twitter/css/Roboto%20Mono%20for%20Powerline.ttf') format('truetype'),
 }
 
 /* Custom container */
