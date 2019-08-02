@@ -14,5 +14,5 @@ One can also filter only the required system calls from strace using;
 
 	strace -p <pid> -f -e trace=read,write,open -o process.trace
 
-Now, i could the see traces from the child processes, and found that the problem was with the child unable to read/write some file because of permission issues.
+  Now, i could the see traces from the child processes, and found that the problem was with the child unable to read/write some file because of permission issues.
 
