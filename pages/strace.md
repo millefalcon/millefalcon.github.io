@@ -10,7 +10,7 @@ One should run strace with the `-f` option to see the trace from the child proce
 
         `strace -p <pid> -s9999 -f -o process.trace`
 
-    One can also filter only the required system calls from strace using;
+One can also filter only the required system calls from strace using;
 
         `strace -p <pid> -f -e trace=read,write,open -o process.trace`
 
