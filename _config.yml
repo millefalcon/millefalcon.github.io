@@ -16,6 +16,8 @@ author :
   twitter : __hanish__
   feedburner : nil
 
+future: true
+
 # NOTE: Replacing this next line with your own URL
 production_url : https://github.com/millefalcon/millefalcon.github.io
 
