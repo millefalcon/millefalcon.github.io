@@ -12,6 +12,7 @@ explains the basic structure of these sites. Then read
 read any of the other things, such as
 [how to test your site locally](pages/local_test.html).
 
+- [Strace journey](pages/strace.html)
 - [Overview](pages/overview.html)
 - [Making an independent website](pages/independent_site.html)
 - [Making a personal site](pages/user_site.html)
