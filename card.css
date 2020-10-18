@@ -16,6 +16,10 @@ a {
     display: flex;
     padding: 3rem;
     //overflow-x: scroll;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    row-gap: 1em;
 }
 
 .card-list::-webkit-scrollbar {
@@ -51,7 +55,7 @@ a {
 }
 
 .card:focus-within~.card, .card:hover~.card {
-    transform: translateX(130px);
+    //transform: translateX(130px);
 }
 
 .card:hover {
@@ -59,7 +63,7 @@ a {
 }
 
 .card:not(:first-child) {
-    margin-left: -130px;
+    //margin-left: -130px;
 }
 
 
