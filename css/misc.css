@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #17141d;
+    color: white;
+    font-family: 'DM Mono', monospace;
+}
+
+a {
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 700;
+    /* font-size: .5rem; */
+    color: #7a7a8c;
+    /* text-transform: uppercase; */
+    border: 3px solid #28242f;
+    border-radius: 2rem;
+    padding: .2rem .85rem .25rem;
+    position: relative;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 3em;
+}
+
+.content {
+    border: 10px;
+}
+
+img {
+    border: 3px solid #7a7a8c;
+}
+
+.content p {
+    display: block;
+    word-wrap: break-word;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.2em;
+    color: grey;
+}
+
+pre {
+    display: block;
+    word-wrap: break-word;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.5em;
+}
+
+.navbar-nav {
+    border-width:1px 0;
+    list-style:none;
+    text-align:center;
+}
+
+.navbar a {
+    display: block;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    color: #7a7a8c;
+    text-transform: uppercase;
+    border: 3px solid #28242f;
+    border-radius: 2rem;
+    padding: .2rem .85rem .25rem;
+    position: relative;
+}
+
+.navbar li {
+    display: inline-block;
+}
+
+
+.navbar a:hover, .content a:hover{
+    background: linear-gradient(90deg,#ff8a00,#e52e71);
+    text-shadow: none;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-box-decoration-break: clone;
+    background-clip: text;
+    border-color: white;
+}
