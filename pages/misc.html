@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cards</title>
+    <!-- <link rel="stylesheet" href="../card.css" /> -->
+	<link rel="stylesheet" href="../css/misc.css" />
+
+  </head>
+  <body>
+  <nav class="navbar">
+    <ul class="navbar-nav">
+      <li class="nav-item"><a href="#">Home</a></li>
+      <li class="nav-item"><a href="#">Anything bash</a></li>
+      <li class="nav-item"><a href="#">Python</a></li>
+      <li class="nav-item"><a href="pages/misc.html">Misc</a></li>
+      <li class="nav-item"><a href="#">About</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+	  <div class="content">
+		  <h2><a href="https://www.python.org/dev/peps/pep-3132/">A tale of Extended Iterable Unpacking( PEP-3132 ) in Python2</a></h2>
+		  <p>So the other day, i saw a question regarding how to do extended iterable unpacking( PEP-3132).</p>
+		  <p>This can be done in python3 like:</p>
+		  <pre>
+			>>> a, b, *c = (1,2,3,4,5)
+			>>> a
+			1
+			>>> b
+			2
+			>>> c
+			[3, 4, 5]
+			>>>
+		  </pre>
+
+		  <p>But the problem was, they wanted to do this in Python2.</p>
+
+		  <p>So for a fun, i commented:</p>
+		  <pre>
+			>>> a, b, c = (lambda x, y, *z: (x, y, z))(*(1,2,3,4,5))
+			>>> a
+			1
+			>>> b
+			2
+			>>> c
+			(3, 4, 5)
+			>>>
+		  </pre>
+
+		  <p>But i never meant this to be used in real code. This was just for fun. Because readability matters. And now you have to explain this to
+		  your colleagues what exactly this does. And if it needs to be explained, then probably there are other better ways to write this.</p>
+
+		  <p>For fun. I made a meme regarding this conversation, using the <a href="https://imgflip.com/memegenerator">Meme generator</a></p>
+
+
+		  <img src="../imgs/unpacking_meme.jpg" alt="extended_iterable_unpacking_meme" />
+	  </div>
+  </div>
+  </body>
+</html>
+
