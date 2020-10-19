@@ -1,11 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
 
 body {
-    padding: 0;
-    margin: 0;
+    /* padding: 0;
+    margin: 0; */
     background-color: #17141d;
     color: white;
     font-family: 'DM Mono', monospace;
+    min-width: 600px;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
 }
 
 a {
@@ -21,17 +25,15 @@ a {
     position: relative;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: 1fr;
+section {
     padding: 3em;
 }
 
-.content {
+article {
     border: 10px;
 }
 
-.content h1 {
+article h1 {
     font-size: 30px;
     background: -webkit-linear-gradient(90deg,#ff8a00,#e52e71);
     -webkit-background-clip: text;
@@ -42,7 +44,7 @@ img {
     border: 3px solid #7a7a8c;
 }
 
-.content p {
+article p {
     display: block;
     word-wrap: break-word;
     font-style: normal;
@@ -83,7 +85,7 @@ pre {
 }
 
 
-.navbar a:hover, .content a:hover{
+.navbar a:hover, article a:hover{
     background: linear-gradient(90deg,#ff8a00,#e52e71);
     text-shadow: none;
     -webkit-text-fill-color: transparent;
