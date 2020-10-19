@@ -20,11 +20,12 @@
   </nav>
   <div class="container">
 	  <div class="content">
-		  <h2><a href="https://www.python.org/dev/peps/pep-3132/">A tale of Extended Iterable Unpacking( PEP-3132 ) in Python2</a></h2>
-		  <p>So the other day, i saw a question regarding how to do extended iterable unpacking( PEP-3132).</p>
-		  <p>This can be done in python3 like:</p>
+		  <h1>A tale of Extended Iterable Unpacking in Python2</h1>
+		  <p>So the other day, i saw a question regarding how to do unpack a tuple <code style="color: white">(1, 2, 3, 4, 5)</code> so that <code style="color: white">a</code> should get <code style="color: white">1</code> and 
+			and <code style="color: white">b</code> should get <code style="color: white">2</code> and <code style="color: white">c</code> should get the rest, which is <code style="color: white">3, 4, 5</code></p>
+		  <p>This can be done in python3 using the extended iterable unpacking<a href="https://www.python.org/dev/peps/pep-3132/">(PEP-3132).</a></p>
 		  <pre>
-			>>> a, b, *c = (1,2,3,4,5)
+			>>> a, b, *c = (1, 2, 3, 4, 5)
 			>>> a
 			1
 			>>> b
@@ -38,7 +39,7 @@
 
 		  <p>So for a fun, i commented:</p>
 		  <pre>
-			>>> a, b, c = (lambda x, y, *z: (x, y, z))(*(1,2,3,4,5))
+			>>> a, b, c = (lambda x, y, *z: (x, y, z))(*(1, 2, 3, 4, 5))
 			>>> a
 			1
 			>>> b
@@ -47,6 +48,7 @@
 			(3, 4, 5)
 			>>>
 		  </pre>
+		  
 
 		  <p>But i never meant this to be used in real code. This was just for fun. Because readability matters. And now you have to explain this to
 		  your colleagues what exactly this does. And if it needs to be explained, then probably there are other better ways to write this.</p>
