@@ -31,6 +31,13 @@ a {
     border: 10px;
 }
 
+.content h1 {
+    font-size: 30px;
+    background: -webkit-linear-gradient(90deg,#ff8a00,#e52e71);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 img {
     border: 3px solid #7a7a8c;
 }
