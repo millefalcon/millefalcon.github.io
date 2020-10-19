@@ -114,6 +114,19 @@ footer a{
     background-clip: text;
 }
 
+.article-thumbnail img {
+    max-width: 100%;
+    max-height: 40%;
+    display: block;
+    padding: .5rem 0 1rem;
+    /* border: 3px solid #28242f; */
+    filter: grayscale(100%);
+    padding: .2rem .85rem .25rem;
+    position: relative;
+    margin: 16px 10px;
+    
+}
+
 .card-author {
     margin: 3rem 0 0;
     display: grid;
