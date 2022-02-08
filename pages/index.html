@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Style circles with a data-driven property</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiaGFuc29sb3dhc3Rha2VuIiwiYSI6ImNra3F3NWU0czByN3Eydm56dTZzanF3YzYifQ.x8EmDuxXHk8VdfhF43Yl4A';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v10',
+            zoom: 3,
+            center: [-122.4473, 37.7535]
+        });
+
+        map.on('load', () => {
+            // Add the vector tileset as a source.
+            map.addSource('ethnicity', {
+                type: 'geojson',
+                // data: 'http://172.24.93.255:8000/covid_cases_us.geojson',
+                data: 'https://raw.githubusercontent.com/millefalcon/millefalcon.github.io/master/data/covid_cases_us.geojson',
+                cluster: true,
+                clusterMaxZoom: 14, // Max zoom to cluster points on
+                clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+            });
+            // map.addLayer({
+            //     'id': 'population',
+            //     'type': 'circle',
+            //     'source': 'ethnicity',
+            //     // 'source-layer': 'default',
+            //     'paint': {
+            //         // Make circles larger as the user zooms from z12 to z22.
+            //         'circle-radius': {
+            //             'base': 1.75,
+            //             'stops': [
+            //                 [12, 2],
+            //                 [22, 180]
+            //             ]
+            //         },
+            //         // Color circles by ethnicity, using a `match` expression.
+            //         'circle-color': [
+            //             'match',
+            //             ['get', 'Country_Region'],
+            //             'US',
+            //             '#fbb03b',
+            //             'Black',
+            //             '#223b53',
+            //             'Hispanic',
+            //             '#e55e5e',
+            //             'Asian',
+            //             '#3bb2d0',
+            // /* other */ '#ccc'
+            //         ]
+            //     }
+            // });
+
+            map.addLayer({
+                id: 'clusters',
+                type: 'circle',
+                source: 'ethnicity',
+                filter: ['has', 'point_count'],
+                paint: {
+                    // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
+                    // with three steps to implement three types of circles:
+                    //   * Blue, 20px circles when point count is less than 100
+                    //   * Yellow, 30px circles when point count is between 100 and 750
+                    //   * Pink, 40px circles when point count is greater than or equal to 750
+                    'circle-color': [
+                        'step',
+                        ['get', 'point_count'],
+                        '#51bbd6',
+                        100,
+                        '#f1f075',
+                        750,
+                        '#f28cb1'
+                    ],
+                    'circle-radius': [
+                        'step',
+                        ['get', 'point_count'],
+                        20,
+                        100,
+                        30,
+                        750,
+                        40
+                    ]
+                }
+            })
+
+            map.addLayer({
+                id: 'cluster-count',
+                type: 'symbol',
+                source: 'ethnicity',
+                filter: ['has', 'point_count'],
+                layout: {
+                    'text-field': '{point_count_abbreviated}',
+                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                    'text-size': 12
+                }
+            });
+
+
+            map.addLayer({
+                id: 'unclustered-point',
+                type: 'circle',
+                source: 'ethnicity',
+                filter: ['!', ['has', 'point_count']],
+                paint: {
+                    'circle-color': '#11b4da',
+                    'circle-radius': 4,
+                    'circle-stroke-width': 1,
+                    'circle-stroke-color': '#fff'
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
