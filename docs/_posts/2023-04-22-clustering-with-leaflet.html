@@ -26,7 +26,6 @@
     
         <style>
             #map {
-                /* height: 180px; */
                 height: 100%;
             }
     
@@ -50,11 +49,13 @@
     
             .material-icons.md-18 { 
                 font-size: 18px;
-                color: green;
+                /* color: green; */
+                color: orange;
              }
             .material-icons.md-24 { 
                 font-size: 24px;
-                color: green;
+                /* color: green; */
+                color: orange;
             }
             .material-icons.md-36 { 
                 font-size: 36px;
@@ -62,7 +63,8 @@
             }
             .material-icons.md-48 { 
                 font-size: 48px;
-                color: red;
+                /* color: red; */
+                color: orange;
             }
     
             /* .marker-pin {
@@ -120,36 +122,6 @@
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
-            // var marker = L.marker([51.5, -0.09], { icon: icon }).addTo(map);
-            // var circle = L.circle([51.508, -0.11], {
-            //     color: 'red',
-            //     fillColor: '#f03',
-            //     fillOpacity: 0.5,
-            //     radius: 500
-            // }).addTo(map);
-            // var polygon = L.polygon([
-            //     [51.509, -0.08],
-            //     [51.503, -0.06],
-            //     [51.51, -0.047]
-            // ]).addTo(map);
-            // marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-            // circle.bindPopup("I am a circle.");
-            // polygon.bindPopup("I am a polygon.");
-            // var popup = L.popup()
-            //     .setLatLng([51.513, -0.09])
-            //     .setContent("I am a standalone popup.")
-            //     .openOn(map);
-
-            // var popup = L.popup();
-
-            // function onMapClick(e) {
-            //     popup
-            //         .setLatLng(e.latlng)
-            //         .setContent("You clicked the map at " + e.latlng.toString())
-            //         .openOn(map);
-            // }
-
-            // map.on('click', onMapClick);
 
             Papa.parse('https://raw.githubusercontent.com/Open-Oven/mvd_kerala_ai/main/mvd_ai_cams.csv', {
                 download: true,
@@ -170,26 +142,28 @@
                     const clusterGroup = L.markerClusterGroup({
                         iconCreateFunction: function(cluster) {
                             var childCount = cluster.getChildCount();
-                            let c = ' ';
-                            let m = ' md-';
+                            let c = '';
+                            let m = '';
                             if (childCount < 10) {
-                                c += 'sm';
-                                m += '24';
+                                c = 'sm';
+                                m = 'md-24';
                             } else if (childCount < 100) {
-                                c += 'md';
-                                m += '36';
+                                c = 'md';
+                                m = 'md-36';
                             } else {
-                                c += 'l';
-                                m += '48';
+                                c = 'l';
+                                m = 'md-48';
                             }
-                            return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>' + `<i class='material-icons ${m}'>photo_camera</i>`, className: 'custom-div-icon' + c, iconSize: new L.Point(40, 40) });
+                            // return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>' + `<i class='material-icons ${m}'>photo_camera</i>`, className: 'custom-div-icon ' + c, iconSize: new L.Point(40, 40) });
+                            return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>' + `<i class='material-icons ${m}'>photo_camera</i>`, className: 'custom-div-icon md', iconSize: new L.Point(40, 40) });
 
                         }
                     });
                     
                     const markers = details.map(detail => {
                         const lng_lat = [Number(detail[3]), Number(detail[4])];
-                        const marker = L.marker(lng_lat, { icon: icon }); // .addTo(map);
+                        const marker = L.marker(lng_lat, { icon: icon });
+                        marker.bindPopup(`<b>Location!</b><br>${detail[2]},${detail[1]}`);
                         clusterGroup.addLayer(marker);
                         return marker;
                     });
