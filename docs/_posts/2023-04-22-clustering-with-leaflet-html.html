@@ -1,0 +1,201 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+            integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+            crossorigin=""/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+            integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+            crossorigin="">
+        </script>
+    
+        <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"
+            crossorigin="">
+        </script>
+    
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+            crossorigin=""/>
+    
+        <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+            crossorigin=""/>
+    
+        <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"
+            crossorigin="">
+        </script>
+    
+    
+        <style>
+            #map {
+                /* height: 180px; */
+                height: 100%;
+            }
+    
+            .custom-div-icon.sm {
+                font-size: 12px;
+                font-weight: bold;
+                color: black;
+            }
+    
+            .custom-div-icon.md {
+                font-size: 14px;
+                font-weight: bold;
+                color: black;
+            }
+    
+            .custom-div-icon.l {
+                font-size: 18px;
+                font-weight: bold;
+                color: black;
+            }
+    
+            .material-icons.md-18 { 
+                font-size: 18px;
+                color: green;
+             }
+            .material-icons.md-24 { 
+                font-size: 24px;
+                color: green;
+            }
+            .material-icons.md-36 { 
+                font-size: 36px;
+                color: orange;
+            }
+            .material-icons.md-48 { 
+                font-size: 48px;
+                color: red;
+            }
+    
+            /* .marker-pin {
+                width: 30px;
+                height: 30px;
+                border-radius: 50% 50% 50% 0;
+                background: #c30b82;
+                position: absolute;
+                transform: rotate(-45deg);
+                left: 50%;
+                top: 50%;
+                margin: -15px 0 0 -15px;
+            } */
+    
+            /* .marker-pin::after {
+                content: '';
+                width: 24px;
+                height: 24px;
+                margin: 3px 0 0 3px;
+                background: #fff;
+                position: absolute;
+                border-radius: 50%;
+            } */
+    
+            /* .custom-div-icon i {
+                position: absolute;
+                width: 22px;
+                font-size: 22px;
+                left: 0;
+                right: 0;
+                margin: 10px auto;
+                text-align: center;
+            } */
+    
+            /* .custom-div-icon i.awesome {
+                margin: 12px auto;
+                font-size: 17px;
+            } */
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+    </body>
+    <script type="text/javascript">
+
+            const icon =  L.divIcon({
+                className: 'custom-div-icon',
+                html: "<div style='background-color:#4838cc;' class='marker-pin'></div><i class='material-icons'>photo_camera</i>",
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
+            });
+
+            var map = L.map('map').setView([51.505, -0.09], 13);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+            var marker = L.marker([51.5, -0.09], { icon: icon }).addTo(map);
+            var circle = L.circle([51.508, -0.11], {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 500
+            }).addTo(map);
+            var polygon = L.polygon([
+                [51.509, -0.08],
+                [51.503, -0.06],
+                [51.51, -0.047]
+            ]).addTo(map);
+            marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+            circle.bindPopup("I am a circle.");
+            polygon.bindPopup("I am a polygon.");
+            var popup = L.popup()
+                .setLatLng([51.513, -0.09])
+                .setContent("I am a standalone popup.")
+                .openOn(map);
+
+            var popup = L.popup();
+
+            function onMapClick(e) {
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent("You clicked the map at " + e.latlng.toString())
+                    .openOn(map);
+            }
+
+            map.on('click', onMapClick);
+
+            const result = Papa.parse('https://raw.githubusercontent.com/Open-Oven/mvd_kerala_ai/main/mvd_ai_cams.csv', {
+                download: true,
+                complete: ({ data: cams }) => {
+                    // console.log('complete', cams);
+
+                    cams = cams.slice(1);
+
+                    const details = cams.filter(x => !!x[0].trim());
+                    console.log(details);
+
+                    const first_cam = details[0];
+
+                    const first_cam_lng_lat = [Number(first_cam[3]), Number(first_cam[4])];
+                    map.setView(first_cam_lng_lat, 9);
+                    
+
+                    const clusterGroup = L.markerClusterGroup({
+                        iconCreateFunction: function(cluster) {
+                            var childCount = cluster.getChildCount();
+                            let c = ' ';
+                            let m = ' md-';
+                            if (childCount < 10) {
+                                c += 'sm';
+                                m += '24';
+                            } else if (childCount < 100) {
+                                c += 'md';
+                                m += '36';
+                            } else {
+                                c += 'l';
+                                m += '48';
+                            }
+                            return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>' + `<i class='material-icons ${m}'>photo_camera</i>`, className: 'custom-div-icon' + c, iconSize: new L.Point(40, 40) });
+
+                        }
+                    });
+                    
+                    const markers = details.map(detail => {
+                        const lng_lat = [Number(detail[3]), Number(detail[4])];
+                        const marker = L.marker(lng_lat, { icon: icon }); // .addTo(map);
+                        clusterGroup.addLayer(marker);
+                        return marker;
+                    });
+                    map.addLayer(clusterGroup);
+                }
+            });
+            console.log({ result });
+        </script>
+</html>
