@@ -110,7 +110,7 @@
     </body>
     <script type="text/javascript">
 
-        // set current location if geolocation is available
+        // set view to current location if geolocation is available
         // else fallback to first cam location
         function setView(map, fallBackCoords) {
             if ("geolocation" in navigator) {
@@ -137,7 +137,7 @@
             iconAnchor: [15, 42]
         });
 
-        var map = L.map('map').setView([51.505, -0.09], 13);
+        var map = L.map('map'); //.setView([51.505, -0.09], 13);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -146,19 +146,13 @@
         Papa.parse('https://raw.githubusercontent.com/Open-Oven/mvd_kerala_ai/main/mvd_ai_cams.csv', {
             download: true,
             complete: ({ data: cams }) => {
-                // console.log('complete', cams);
-
+                // ignore header, for now
                 cams = cams.slice(1);
-
+                // the data seems to have some empty rows. santize.
                 cams = cams.filter(x => !!x[0].trim());
-                // console.log(cams);
-
                 const first_cam = cams[0];
-
                 const first_cam_lat_lng = [Number(first_cam[3]), Number(first_cam[4])];
-                // map.setView(first_cam_lat_lng, 9);
                 setView(map, first_cam_lat_lng);
-                
 
                 const clusterGroup = L.markerClusterGroup({
                     iconCreateFunction: function(cluster) {
@@ -178,8 +172,8 @@
                 });
                 
                 const markers = cams.map(detail => {
-                    const lng_lat = [Number(detail[3]), Number(detail[4])];
-                    const marker = L.marker(lng_lat, { icon: icon });
+                    const lat_ng = [Number(detail[3]), Number(detail[4])];
+                    const marker = L.marker(lat_ng, { icon: icon });
                     marker.bindPopup(`<b>Location!</b><br>${detail[2]},${detail[1]}`);
                     clusterGroup.addLayer(marker);
                     return marker;
