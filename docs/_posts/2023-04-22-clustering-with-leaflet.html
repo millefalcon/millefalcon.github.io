@@ -110,66 +110,82 @@
     </body>
     <script type="text/javascript">
 
-            const icon =  L.divIcon({
-                className: 'custom-div-icon',
-                html: "<div style='background-color:#4838cc;' class='marker-pin'></div><i class='material-icons'>photo_camera</i>",
-                iconSize: [30, 42],
-                iconAnchor: [15, 42]
-            });
+        // set current location if geolocation is available
+        // else fallback to first cam location
+        function setView(map, fallBackCoords) {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        map.setView([position.coords.latitude, position.coords.longitude], 9);
+                    },
+                    (error) => {
+                        // maybe access denied
+                        map.setView(fallBackCoords, 9);
+                    }
+                );
+            } else {
+                /* geolocation IS NOT available */
+                map.setView(fallBackCoords, 9);
+            }
+        }
 
-            var map = L.map('map').setView([51.505, -0.09], 13);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
 
-            Papa.parse('https://raw.githubusercontent.com/Open-Oven/mvd_kerala_ai/main/mvd_ai_cams.csv', {
-                download: true,
-                complete: ({ data: cams }) => {
-                    // console.log('complete', cams);
+        const icon =  L.divIcon({
+            className: 'custom-div-icon',
+            html: "<div style='background-color:#4838cc;' class='marker-pin'></div><i class='material-icons'>photo_camera</i>",
+            iconSize: [30, 42],
+            iconAnchor: [15, 42]
+        });
 
-                    cams = cams.slice(1);
+        var map = L.map('map').setView([51.505, -0.09], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
 
-                    const details = cams.filter(x => !!x[0].trim());
-                    console.log(details);
+        Papa.parse('https://raw.githubusercontent.com/Open-Oven/mvd_kerala_ai/main/mvd_ai_cams.csv', {
+            download: true,
+            complete: ({ data: cams }) => {
+                // console.log('complete', cams);
 
-                    const first_cam = details[0];
+                cams = cams.slice(1);
 
-                    const first_cam_lng_lat = [Number(first_cam[3]), Number(first_cam[4])];
-                    map.setView(first_cam_lng_lat, 9);
-                    
+                cams = cams.filter(x => !!x[0].trim());
+                // console.log(cams);
 
-                    const clusterGroup = L.markerClusterGroup({
-                        iconCreateFunction: function(cluster) {
-                            var childCount = cluster.getChildCount();
-                            let c = '';
-                            let m = '';
-                            if (childCount < 10) {
-                                c = 'sm';
-                                m = 'md-24';
-                            } else if (childCount < 100) {
-                                c = 'md';
-                                m = 'md-36';
-                            } else {
-                                c = 'l';
-                                m = 'md-48';
-                            }
-                            // return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>' + `<i class='material-icons ${m}'>photo_camera</i>`, className: 'custom-div-icon ' + c, iconSize: new L.Point(40, 40) });
-                            return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>' + `<i class='material-icons ${m}'>photo_camera</i>`, className: 'custom-div-icon md', iconSize: new L.Point(40, 40) });
+                const first_cam = cams[0];
 
+                const first_cam_lat_lng = [Number(first_cam[3]), Number(first_cam[4])];
+                // map.setView(first_cam_lat_lng, 9);
+                setView(map, first_cam_lat_lng);
+                
+
+                const clusterGroup = L.markerClusterGroup({
+                    iconCreateFunction: function(cluster) {
+                        var childCount = cluster.getChildCount();
+                        let m = '';
+                        if (childCount < 10) {
+                            m = 'md-24';
+                        } else if (childCount < 100) {
+                            m = 'md-36';
+                        } else {
+                            m = 'md-48';
                         }
-                    });
-                    
-                    const markers = details.map(detail => {
-                        const lng_lat = [Number(detail[3]), Number(detail[4])];
-                        const marker = L.marker(lng_lat, { icon: icon });
-                        marker.bindPopup(`<b>Location!</b><br>${detail[2]},${detail[1]}`);
-                        clusterGroup.addLayer(marker);
-                        return marker;
-                    });
-                    map.addLayer(clusterGroup);
-                }
-            });
-            console.log({ result });
+                        // return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>' + `<i class='material-icons ${m}'>photo_camera</i>`, className: 'custom-div-icon ' + c, iconSize: new L.Point(40, 40) });
+                        return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>' + `<i class='material-icons ${m}'>photo_camera</i>`, className: 'custom-div-icon md', iconSize: new L.Point(40, 40) });
+
+                    }
+                });
+                
+                const markers = cams.map(detail => {
+                    const lng_lat = [Number(detail[3]), Number(detail[4])];
+                    const marker = L.marker(lng_lat, { icon: icon });
+                    marker.bindPopup(`<b>Location!</b><br>${detail[2]},${detail[1]}`);
+                    clusterGroup.addLayer(marker);
+                    return marker;
+                });
+                map.addLayer(clusterGroup);
+            }
+        });
         </script>
 </html>
