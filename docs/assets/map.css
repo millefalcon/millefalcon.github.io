@@ -1,0 +1,78 @@
+#map {
+    height: 100%;
+}
+
+.custom-div-icon.sm {
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+}
+
+.custom-div-icon.md {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+}
+
+.custom-div-icon.l {
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+}
+
+.material-icons.md-18 { 
+    font-size: 18px;
+    /* color: green; */
+    color: orange;
+ }
+.material-icons.md-24 { 
+    font-size: 24px;
+    /* color: green; */
+    color: orange;
+}
+.material-icons.md-36 { 
+    font-size: 36px;
+    color: orange;
+}
+.material-icons.md-48 { 
+    font-size: 48px;
+    /* color: red; */
+    color: orange;
+}
+
+/* .marker-pin {
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    background: #c30b82;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+} */
+
+/* .marker-pin::after {
+    content: '';
+    width: 24px;
+    height: 24px;
+    margin: 3px 0 0 3px;
+    background: #fff;
+    position: absolute;
+    border-radius: 50%;
+} */
+
+/* .custom-div-icon i {
+    position: absolute;
+    width: 22px;
+    font-size: 22px;
+    left: 0;
+    right: 0;
+    margin: 10px auto;
+    text-align: center;
+} */
+
+/* .custom-div-icon i.awesome {
+    margin: 12px auto;
+    font-size: 17px;
+} */
