@@ -1,5 +1,3 @@
-// TODO: add filter for district ?
-
 // set view to current location if geolocation is available
 // else fallback to first cam location
 function setView(map, fallBackCoords) {
@@ -19,6 +17,18 @@ function setView(map, fallBackCoords) {
     }
 }
 
+// helper function for getting data from url and parsing the csv
+function getCamsData(url) {
+    return new Promise((resolve, reject) => {
+        Papa.parse(url, {
+            download: true,
+            complete: ({ data }) => resolve(data),
+            error: (err, file, inputElem, reason) => reject([err,file, inputElem, reason]),
+        });
+    })
+}
+
+// camera icon
 const icon = L.divIcon({
     className: 'custom-div-icon',
     html: "<div style='background-color:#4838cc;' class='marker-pin'></div><i class='material-icons'>photo_camera</i>",
@@ -26,6 +36,7 @@ const icon = L.divIcon({
     iconAnchor: [15, 42]
 });
 
+// setup map
 var map = L.map('map');
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -33,7 +44,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 
-
+// cluster group with layer support
 const clusterGroup = L.markerClusterGroup.layerSupport({
     iconCreateFunction: function (cluster) {
         var childCount = cluster.getChildCount();
@@ -52,42 +63,50 @@ const clusterGroup = L.markerClusterGroup.layerSupport({
 });
 clusterGroup.addTo(map);
 
-
+// setup layer control
 const control = L.control.layers(null, null, { collapsed: true });
-Papa.parse('https://raw.githubusercontent.com/Open-Oven/mvd_kerala_ai/main/mvd_ai_cams.csv', {
-    download: true,
-    complete: ({ data: cams }) => {
-        // ignore header, for now
-        cams = cams.slice(1);
-        // the data seems to have some empty rows. santize.
-        cams = cams.filter(x => !!x[0].trim());
-        const first_cam = cams[0];
-        const first_cam_lat_lng = [Number(first_cam[3]), Number(first_cam[4])];
-        setView(map, first_cam_lat_lng);
 
-        const mapping = cams.reduce((mapping, cam_detail) => {
-            let district = cam_detail[1];
-            if (!mapping.get(district)) {
-                mapping.set(district, [cam_detail]);
-            } else {
-                mapping.get(district).push(cam_detail);
-            }
-            return mapping;
-        }, new Map());
+getCamsData('https://raw.githubusercontent.com/Open-Oven/mvd_kerala_ai/main/mvd_ai_cams.csv')
+.then((cams) => {
+    // ignore header, for now
+    cams = cams.slice(1);
+    // the data seems to have some empty rows. santize.
+    cams = cams.filter(x => !!x[0].trim());
+    const first_cam = cams[0];
+    const first_cam_lat_lng = [Number(first_cam[3]), Number(first_cam[4])];
+    setView(map, first_cam_lat_lng);
 
-        // console.log({ mapping });
-
-        for ([district, cams] of mapping) {
-            const layerGroup = L.layerGroup().addTo(map);
-            cams.forEach(detail => {
-                const lat_ng = [Number(detail[3]), Number(detail[4])];
-                const marker = L.marker(lat_ng, { icon: icon, district: district });
-                marker.bindPopup(`<b>Location!</b><br>${detail[2]},${detail[1]}`);
-                layerGroup.addLayer(marker);
-            });
-            control.addOverlay(layerGroup, district);
-            clusterGroup.checkIn(layerGroup);
+    const mapping = cams.reduce((mapping, cam_detail) => {
+        let district = cam_detail[1];
+        if (!mapping.get(district)) {
+            mapping.set(district, [cam_detail]);
+        } else {
+            mapping.get(district).push(cam_detail);
         }
-        control.addTo(map);
+        return mapping;
+    }, new Map());
+
+    // console.log({ mapping });
+
+    for ([district, cams] of mapping) {
+        const layerGroup = L.layerGroup().addTo(map);
+        cams.forEach(detail => {
+            const lat_lng = [Number(detail[3]), Number(detail[4])];
+            const marker = L.marker(lat_lng, { icon: icon, district: district });
+            marker.bindPopup(`<b>Location!</b><br>${detail[2]},${detail[1]}`);
+            layerGroup.addLayer(marker);
+        });
+        control.addOverlay(layerGroup, district);
+        clusterGroup.checkIn(layerGroup);
     }
+    control.addTo(map);
+})
+.catch(err => {
+    new Notyf({ 
+        position: {
+            x: 'right',
+            y: 'top',
+        }
+    }).error(err[0].stack);
+    console.error(err);
 });
