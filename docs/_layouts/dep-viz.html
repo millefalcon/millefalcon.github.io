@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualize Python Package Dependency</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js"></script>
+    <style>
+        main {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+        }
+
+        textarea {
+            min-height: 100%;
+            min-width: calc(100% - 2rem);
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div id="content">
+            <svg width="900" height="800">
+            </svg>
+        </div>
+        <div>
+            <textarea id="input"></textarea>
+        </div>
+    </main>
+    <!-- <script type="module" src="index.js"></script> -->
+    <script type="module" type="text/javascript">
+        import { render } from "../assets/depViz.js";
+        const textarea = document.getElementById("input");
+        textarea.addEventListener("change", (e) => {
+            const input_data = JSON.parse(e.target.value);
+            console.log({ value: input_data });
+            render(input_data);
+            e.target.value = JSON.stringify(input_data, undefined, 2);
+        });
+    </script>
+</body>
+
+</html>
