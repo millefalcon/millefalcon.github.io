@@ -20,6 +20,11 @@
         svg {
             color: hsl(0 0% 0% / 0.7);
         }
+
+        #sample-data {
+            font-size: 0.8em;
+            color: grey;
+        }
     </style>
 </head>
 
@@ -30,14 +35,23 @@
             </svg>
         </div>
         <div>
-            <textarea id="input" placeholder="Paste the output of the `pipdeptree -p <package> --json` here..."></textarea>
+            <textarea id="input"
+                placeholder="Paste the output of the `pipdeptree -p <package> --json` here..."></textarea>
+            <div id="sample-data">
+                <p>Copy paste this sample to try it out...</p>
+                <code>
+                    [{"package":{"key":"click","package_name":"click","installed_version":"8.1.7"},"dependencies":[]},{"package":{"key":"h11","package_name":"h11","installed_version":"0.14.0"},"dependencies":[]},{"package":{"key":"typing-extensions","package_name":"typing_extensions","installed_version":"4.12.2"},"dependencies":[]},{"package":{"key":"uvicorn","package_name":"uvicorn","installed_version":"0.30.1"},"dependencies":[{"key":"click","package_name":"click","installed_version":"8.1.7","required_version":">=7.0"},{"key":"h11","package_name":"h11","installed_version":"0.14.0","required_version":">=0.8"},{"key":"typing-extensions","package_name":"typing_extensions","installed_version":"4.12.2","required_version":">=4.0"}]}]
+                </code>
+            </div>
         </div>
     </main>
     <!-- <script type="module" src="index.js"></script> -->
     <script type="module" type="text/javascript">
         import { render } from "../assets/depViz.js";
         const textarea = document.getElementById("input");
+        const sampleDataDiv = document.getElementById("sample-data");
         textarea.addEventListener("change", (e) => {
+            sampleDataDiv.style.display = "none";
             const input_data = JSON.parse(e.target.value);
             console.log({ value: input_data });
             render(input_data);
