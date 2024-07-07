@@ -74,7 +74,8 @@ export function render(data_input) {
         .data(nodes)
         .join("circle")
         .attr("r", 10)
-        .attr("fill", d => color(d.group));
+        // .attr("fill", d => color(d.group))
+        .attr("fill", "currentColor");
 
     const label = svg.append("g")
         .attr("class", "labels")
