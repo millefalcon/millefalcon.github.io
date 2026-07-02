@@ -2,7 +2,7 @@
 layout: post
 title:  "Find max value from a list of lists"
 date:   2022-12-04 12:14:58 +0530
-categories: python3 max list
+categories: python max list
 ---
 Another day of lurking in libera's #python channel, and someone was wondering what's the best way to find the max value from a list of lists.
 

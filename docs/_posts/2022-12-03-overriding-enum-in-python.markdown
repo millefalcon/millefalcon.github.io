@@ -2,7 +2,7 @@
 layout: post
 title:  "Overriding Enum in Python"
 date:   2022-12-03 12:14:58 +0530
-categories: python3 enum metaclass
+categories: python enum metaclass
 ---
 I was lurking in libera's #python channel one day, and someone was wondering if they could override the callable functionality of `Enum`.
 

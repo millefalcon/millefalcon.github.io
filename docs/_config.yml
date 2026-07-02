@@ -25,10 +25,17 @@ url: "https://millefalcon.github.io" # the base hostname & protocol for your sit
 github_username: millefalcon
 
 # Build settings
+
+remote_theme: "jekyll/minima@1e8a445"
+
 markdown: kramdown
-theme: minima
+# theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-remote-theme
+
+minima:
+  skin: solarized-light
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
