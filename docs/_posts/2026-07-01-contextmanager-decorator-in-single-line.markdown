@@ -43,11 +43,43 @@ Finishing
 >>> 
 {% endhighlight %}
 
-
-## The One Liner
+## Normal Implementation
 Now that got me thinking, which would be a nice contextmanager that can be used as a decorator.
 `redirect_stdout` seems like a good one. I thought, it would already be a contextmanager decorator, but looks like it is not.
 
+We can just wrap the `redirect_stdout` in a `contextmanager` like,
+
+{% highlight python %}
+>>> from contextlib import contextmanager, redirect_stdout
+>>> import io
+>>> 
+>>> 
+>>> @contextmanager
+... def redirect_stdout2(f):
+...     with redirect_stdout(f):
+...         yield
+... 
+>>> 
+>>> f = io.StringIO()
+>>> 
+>>> 
+>>> @redirect_stdout2(f)
+... def func(x, y):
+...     print("hello world")
+...     return x + y
+... 
+>>> 
+>>> func(1, 2)
+3
+>>> f.getvalue()
+'hello world\n'
+>>> 
+{% endhighlight %}
+
+But that got me thinking, how would a one liner look like :)
+
+
+## The One Liner
 So I spent an hour or so bruteforcing and reading the [docs](https://github.com/python/cpython/blob/3.14/Lib/contextlib.py) to make it work, and it took more than an hour ':)
 
 It looks something like this,
@@ -76,13 +108,14 @@ It looks something like this,
 ...     return x + y
 ... 
 >>> 
->>> print(func(1, 2))
+>>> func(1, 2)
 3
+>>> f.getvalue()
+'hello world\n'
 >>> 
->>> print(f"{f.getvalue().rstrip()!r}")
-'hello world'
 {% endhighlight %}
 
+Now, why would anyone want to do that ? No reason.
 
 Anyway, that was fun :)
 
