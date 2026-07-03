@@ -13,22 +13,21 @@ Most example seems to be regarding some kind of logigng usage, and also saw it h
 tl;dr, it looks something like the following
 
 {% highlight python %}
-from contextlib import contextmanager
-
-
-@contextmanager
-def context():
-    print("Starting")
-    yield
-    print("Finishing")
-
-
-@context()
-def function():
-    print("The bit in the middle")
-
-
-function()
+>>> from contextlib import contextmanager
+>>>
+>>>
+>>> @contextmanager
+>>> def context():
+>>>     print("Starting")
+>>>     yield
+>>>     print("Finishing")
+>>>
+>>>
+>>> @context()
+>>> def function():
+>>>     print("The bit in the middle")
+>>>
+>>>
 >>> function()
 Starting
 The bit in the middle
