@@ -37,6 +37,16 @@ plugins:
 minima:
   skin: solarized-light
 
+header_pages:
+  - index.md
+  - about.md
+  - misc.md
+
+collections:
+  misc:
+    output: true
+    
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
